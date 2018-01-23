@@ -1,11 +1,12 @@
-'use strict';
-
-/*global videos */
 
 const store = (function() {
-  videos: [];
+  let videos= [];
   const setVideos = function(videosReceived) {
-    videos = videosReceived;    
+    console.log('the videos we got',videosReceived);
+    console.log('videos before',videos);
+    this.videos = videosReceived; 
+    console.log('videos after',videos);
+
   };
   return {
     videos, 
