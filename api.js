@@ -14,18 +14,21 @@ const api = (function() {
     $.getJSON(BASE_URL, query, callback);
   };
 
-  const decorateResponse = function (response) {
-    const decoratedResponse = youTubeObjTest.items.map(youtubeObj => (
-      {
-        videoId: youtubeObj.id.videoId,
-        videoThumbnail: youtubeObj.snippet.thumbnails.default.url,
-        videoTitle: youtubeObj.snippet.title,
-      }));
-    return decoratedResponse;
-  };
+  // const decorateResponse = function (response) {
+  //   const decoratedResponse = response.items.map(youtubeObj => (
+  //     {
+  //       videoId: youtubeObj.id.videoId,
+  //       videoThumbnail: youtubeObj.snippet.thumbnails.default.url,
+  //       videoTitle: youtubeObj.snippet.title,
+  //     }));
+  //   	console.log('our deco response is',decoratedResponse);
+  //   	store.setVideos(decoratedResponse);
+  //   return decoratedResponse;
+  // };
   return {
-    fetchVidoes,
-    decoratedResponse
+    fetchVideos
+   
   };
+
 
 }());
