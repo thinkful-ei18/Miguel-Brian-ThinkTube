@@ -1,4 +1,4 @@
-const API_KEY = 'YOUR_KEY_HERE';
+const API_KEY = 'AIzaSyB6o7FIkL6-u9sc4mC_fHr8hst0gQMPSNE';
 
 const store = {
   videos: []
@@ -6,16 +6,31 @@ const store = {
 
 // TASK: Add the Youtube Search Base URL here:
 // Documentation is here: https://developers.google.com/youtube/v3/docs/search/list#usage
-const BASE_URL = '';
+const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 
-// TASK:
+// TASK: DONE,ish
 // 1. Create a `fetchVideos` function that receives a `searchTerm` and `callback`
 // 2. Use `searchTerm` to construct the right query object based on the Youtube API docs
 // 3. Make a getJSON call using the query object and sending the provided callback in as the last argument
 // TEST IT! Execute this function and console log the results inside the callback.
-const fetchVideos = function(searchTerm, callback) {
+const fetchVideos = function(searchTerm,callback) {
+	console.log('fetchVideos');
+	const query = {
+		part:'snippet',
+		key:API_KEY,
+		q:`${searchTerm} in:video`
+	};
+	$.getJSON(BASE_URL,query,callback);
+};
+
+//map function
+const displayVideos = function(data){
 
 };
+
+//YOUTUBEOBJ.items.id
+//YOUTUBEOBJ.items.thumbnails.default
+//YOUTUBEOBJ.items.title
 
 // TASK:
 // 1. Create a `decorateResponse` function that receives the Youtube API response
@@ -26,8 +41,13 @@ const fetchVideos = function(searchTerm, callback) {
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
+	console.log('entered decoratedResponse');
+	const decoratedResponse = response.map(youtubeObj=>({id:youtubeObj.items.id,thumbnail:youtubeObj.items.thumbnails.default,title:youtubeObj.items.title}));
 
+	console.log(decoratedResponse);
 };
+
+//var result = arr.map(person => ({ value: person.id, text: person.name }));
 
 // TASK:
 // 1. Create a `generateVideoItemHtml` function that receives the decorated object
@@ -66,11 +86,28 @@ const render = function() {
 //   g) Inside the callback, run the `render` function 
 // TEST IT!
 const handleFormSubmit = function() {
+$('#search-videos').on('submit',event=>{
+		event.preventDefault();
+		const userSearch=$('#search-term').val();
+		$('#search-term').val('');
+		fetchVideos(userSearch,decorateResponse);
+	
 
+});
 };
+//const newItemName = $('.js-shopping-list-entry').val(); 
+//$('.js-shopping-list-entry').val(''); 
+//addItemToShoppingList(newItemName); 
+//render();
+
+
+
+
 
 // When DOM is ready:
 $(function () {
   // TASK:
   // 1. Run `handleFormSubmit` to bind the event listener to the DOM
+
+  handleFormSubmit();
 });
