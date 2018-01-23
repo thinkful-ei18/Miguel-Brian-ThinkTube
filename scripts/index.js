@@ -44,15 +44,24 @@ const displayVideos = function(data){
 // you get back the object you want.
 const decorateResponse = function(response) {
   console.log('entered decoratedResponse');
-	console.log(response);
-	let youTubeObjTest = response;  
-	console.log(response.items[0].id.videoId);
-	const decoratedResponse = response.items.map((youtubeObj, index)=> ({videoId:youtubeObj[index]}));
+  console.log(response);
+  let youTubeObjTest = response;  
+  console.log(response.items[0].id.videoId);
+  const decoratedResponse = youTubeObjTest.items.map(youtubeObj => (
+    {
+      videoId: youtubeObj.id.videoId,
+      videoThumbnail: youtubeObj.snippet.thumbnails.default.url,
+      videoTitle: youtubeObj.snippet.title,
+    }));
+
+  addVideosToStore(decoratedResponse);	
 		
-	//thumbnail:youtubeObj.items.thumbnails.default,
-    //title:youtubeObj.items.title}));
-  console.log(decoratedResponse);
+  return decoratedResponse;
+  //thumbnail:youtubeObj.items.thumbnails.default,
+  //title:youtubeObj.items.title}));
 };
+
+
 
 //var result = arr.map(person => ({ value: person.id, text: person.name }));
 
@@ -61,6 +70,7 @@ const decorateResponse = function(response) {
 // 2. Using the object, return an HTML string containing all the expected data
 // TEST IT!
 const generateVideoItemHtml = function(video) {
+	
 
 };
 
@@ -68,8 +78,12 @@ const generateVideoItemHtml = function(video) {
 // 1. Create a `addVideosToStore` function that receives an array of decorated video 
 // objects and sets the array as the value held in store.items
 // TEST IT!
-const addVideosToStore = function(videos) {
-
+const addVideosToStore = function(videosArray) {
+  for (let i=0; i < videosArray.length; i++) {
+    store.videos.push(videosArray[i]);
+  }
+  console.log('our local array is'); 
+  console.log(store.videos);
 };
 
 // TASK:
@@ -98,7 +112,9 @@ const handleFormSubmit = function() {
     const userSearch=$('#search-term').val();
     $('#search-term').val('');
     fetchVideos(userSearch,decorateResponse);
-	
+    function filteringVideos() {
+			
+    }
 
   });
 };
