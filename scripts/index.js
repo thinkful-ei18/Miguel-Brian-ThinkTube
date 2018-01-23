@@ -1,3 +1,5 @@
+'use strict';
+
 const API_KEY = 'AIzaSyB6o7FIkL6-u9sc4mC_fHr8hst0gQMPSNE';
 
 const store = {
@@ -14,13 +16,13 @@ const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 // 3. Make a getJSON call using the query object and sending the provided callback in as the last argument
 // TEST IT! Execute this function and console log the results inside the callback.
 const fetchVideos = function(searchTerm,callback) {
-	console.log('fetchVideos');
-	const query = {
-		part:'snippet',
-		key:API_KEY,
-		q:`${searchTerm} in:video`
-	};
-	$.getJSON(BASE_URL,query,callback);
+  console.log('fetchVideos');
+  const query = {
+    part:'snippet',
+    key:API_KEY,
+    q:`${searchTerm} in:video`
+  };
+  $.getJSON(BASE_URL,query,callback);
 };
 
 //map function
@@ -41,10 +43,15 @@ const displayVideos = function(data){
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
-	console.log('entered decoratedResponse');
-	const decoratedResponse = response.map(youtubeObj=>({id:youtubeObj.items.id,thumbnail:youtubeObj.items.thumbnails.default,title:youtubeObj.items.title}));
-
-	console.log(decoratedResponse);
+  console.log('entered decoratedResponse');
+	console.log(response);
+	let youTubeObjTest = response;  
+	console.log(response.items[0].id.videoId);
+	const decoratedResponse = response.items.map((youtubeObj, index)=> ({videoId:youtubeObj[index]}));
+		
+	//thumbnail:youtubeObj.items.thumbnails.default,
+    //title:youtubeObj.items.title}));
+  console.log(decoratedResponse);
 };
 
 //var result = arr.map(person => ({ value: person.id, text: person.name }));
@@ -86,14 +93,14 @@ const render = function() {
 //   g) Inside the callback, run the `render` function 
 // TEST IT!
 const handleFormSubmit = function() {
-$('#search-videos').on('submit',event=>{
-		event.preventDefault();
-		const userSearch=$('#search-term').val();
-		$('#search-term').val('');
-		fetchVideos(userSearch,decorateResponse);
+  $('#search-videos').on('submit',event=>{
+    event.preventDefault();
+    const userSearch=$('#search-term').val();
+    $('#search-term').val('');
+    fetchVideos(userSearch,decorateResponse);
 	
 
-});
+  });
 };
 //const newItemName = $('.js-shopping-list-entry').val(); 
 //$('.js-shopping-list-entry').val(''); 
